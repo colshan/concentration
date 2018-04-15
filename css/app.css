@@ -1,0 +1,42 @@
+#container {
+	text-align:center;
+}
+
+h1 {
+	margin: auto;
+	padding-bottom:5px;
+}
+.cell {
+	width: 15vh;
+	height: 15vh;
+	display: inline-block;
+	margin: .5vh;
+	border-radius: 5px;
+}
+
+#board {
+	padding-top:5px;
+	width:64vh;
+	margin:auto;
+}
+
+@media screen and (max-aspect-ratio: 4/5){
+	.cell {
+		width: 20vw;
+		height: 20vw;
+		margin: .5vw;
+	}
+
+	#board {
+		width: 84vw;
+	}
+
+}
+
+.face-down {
+	background-color: #000000;
+}
+
+.removed {
+	background-color: #FFFFFF;
+}
