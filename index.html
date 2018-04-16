@@ -10,11 +10,17 @@
 		<header>
 			<h1>Concentration</h1>
 		</header>
-		<span id="timer">00:00 </span>|
-		<span id="stars"> *** </span>|
-		<span id="moves"> 0</span>
-		<button id="new-game">New Game</button>
+		<button class="new-game">New Game</button>
+		<div class="label" id="stars">&#9734&#9734&#9734</div>
+		<div class="label" id="moves">0 Moves</div>
+		<div class="label" id="timer">00:00</div>
 		<div id="board">
+		</div>
+	</div>
+	<div id="modal-background">
+		<div id="modal-box">
+			<p id="modal-content"></p>
+			<button class="new-game">New Game</button>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>

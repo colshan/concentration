@@ -1,30 +1,31 @@
 const model = {
-			cards: ["#000080",
-					"#FFA500",
-					"#00FFFF",
-					"#00FF00",
-					"#FFFF00",
-					"#FF0000",
-					"#C0C0C0",
-					"#800080"],
+			cards: ['#000080',
+					'#FFA500',
+					'#00FFFF',
+					'#00FF00',
+					'#FFFF00',
+					'#FF0000',
+					'#C0C0C0',
+					'#800080'],
 			cells: [],
 			previousCard: null,
 			locked: false,
 			elapsedTime: 0,
 			matches: 0,
 			timer: null,
-			clicks: 0
+			clicks: 0,
+			stars: 3
 }; 
 
 const view = {
 
 	buildBoard: function(){
 
-		const board = $("#board")
+		const board = $('#board')
 		for(let i = 0; i < 4; i++){
-			let row = $(`<div class="row"><div>`);
+			const row = $('<div class="row"><div>');
 			for(let j = 0; j < 4; j++){
-				let cell = $(`<div class="cell face-down" id="${i.toString() + ' ' + j.toString()}"></div>`)
+				const cell = $(`<div class="cell face-down" id="${i.toString() + ' ' + j.toString()}"></div>`)
 				cell.appendTo(row);
 			}
 
@@ -34,19 +35,16 @@ const view = {
 
 	flipCard: function(card){
 
-		if (card.hasClass('face-down')){
-			card.css("background-color", ctrl.getCard(card));
-		}
-		else{
-			card.css("background-color", "#000000");
-		}
+		const backgroundColor = card.hasClass('face-down') ? ctrl.getCard(card) : '#000000'
+		card.css('background-color', backgroundColor);
+
 		card.toggleClass('face-down');
 
 	},
 
 	removeCard: function (card){
 
-		card.css("background-color", "#FFFFFF");
+		card.css('background-color', '#FFFFFF');
 
 	},
 
@@ -61,24 +59,24 @@ const view = {
 		minutes = minutes.slice(-2);
 		seconds = seconds.slice(-2);
 
-		$("#timer").html(minutes + ":" + seconds + ' ');
+		$('#timer').html(minutes + ':' + seconds);
 
 	},
 
 	updateStars: function (){
 
-		let res = "***";
-		let stars = 3 - Math.floor(model.clicks/32);
-		if (stars < 0){
-			stars = 0;
+		let res = '&#9734&#9734&#9734';
+		 model.stars = 3 - Math.floor(model.clicks/24);
+		if (model.stars < 0){
+			model.stars = 0;
 		}
-		$("#stars").html(res.slice(0,stars) + ' ');
+		$("#stars").html(res.slice(0,model.stars*6));
 
 	},
 
 	updateMoves: function (){
-		let moves = Math.floor(model.clicks/2);
-		$("#moves").html(moves);
+		const moves = Math.floor(model.clicks/2);
+		$('#moves').html(moves + ' Moves');
 
 	},
 
@@ -87,21 +85,31 @@ const view = {
 		$('.removed').removeClass('removed');
 		$('.cell').addClass('face-down');
 		$('.cell').css('background-color', '#000000')
+
+	},
+
+	displayModal: function (content) {
+		$('#modal-content').html(content);
+		$('#modal-background').css('display', 'block');
+		$('#modal-box').css('display', 'block');
 		
+		$('#modal-background').on('click', function () {
+			$('#modal-background').css('display', 'none');
+			$('#modal-box').css('display', 'none');
+		})
 	}
 }
 
-
 const ctrl = {
 
-	shuffle: function (a) {
-		//copied from stackoverflow
+	shuffle: function (array) {
 
-    	for (let i = a.length - 1; i > 0; i--) {
-       	 	const j = Math.floor(Math.random() * (i + 1));
-        	[a[i], a[j]] = [a[j], a[i]];
-    	}
-    	return a;
+		for (let i = 1; i < array.length; i++){
+			const j = Math.floor(Math.random() * i);
+		  	[array[i], array[j]] = [array[j], array[i]];
+		}
+
+    	return array;
 
 	},
 
@@ -114,10 +122,9 @@ const ctrl = {
 
 	startTimer: function (){
 
-		if (model.timer !== null){
-			clearInterval(model.timer);
-			model.elapsedTime = 0;
-		}
+		clearInterval(model.timer);
+
+		model.elapsedTime = 0;
 
 		model.timer = setInterval(ctrl.incrementTime, 1000);
 
@@ -135,6 +142,7 @@ const ctrl = {
 		model.cells = [];
 		model.locked = false;
 		model.previousCard = null;
+		model.matches = 0;
 
 		ctrl.startTimer();
 
@@ -181,7 +189,10 @@ const ctrl = {
 	gameComplete: function () {
 
 		ctrl.stopTimer();
-		view.displayCompletionModal();
+
+		const content = `You have completed the game in ${model.elapsedTime} seconds and received ${model.stars} stars.  Do you want to play again?`;
+
+		setTimeout(view.displayModal(content), 100);
 
 	},
 
@@ -197,9 +208,9 @@ const ctrl = {
 
 		const target = $(event.target);
 
-		if (target.hasClass("cell") && 
-			target.hasClass("face-down") && 
-			!target.hasClass("removed") &&
+		if (target.hasClass('cell') && 
+			target.hasClass('face-down') && 
+			!target.hasClass('removed') &&
 			!model.locked){
 
 			view.flipCard(target);
@@ -221,7 +232,7 @@ const ctrl = {
 						view.removeCard(firstCard);
 						
 						model.matches++;
-						
+
 						if (model.matches >= 8){
 							ctrl.gameComplete();
 						}
@@ -231,8 +242,9 @@ const ctrl = {
 						view.flipCard(target);
 						view.flipCard(firstCard);
 					}
-					
+
 					model.locked = false;
+
 				}, 750, firstCard)
 			}
 			else {
@@ -243,8 +255,8 @@ const ctrl = {
 	},
 
 	run: function() {
-		$('#board').on("click", ctrl.clickEventHandler)
-		$('#new-game').on("click", ctrl.newGame)
+		$('#board').on('click', ctrl.clickEventHandler)
+		$('.new-game').on('click', ctrl.newGame)
 
 		view.buildBoard();
 		ctrl.newGame();

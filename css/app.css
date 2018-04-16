@@ -2,6 +2,12 @@
 	text-align:center;
 }
 
+.label {
+	display:inline-block;
+	width: 15vh;
+	margin: .5vh;
+}
+
 h1 {
 	margin: auto;
 	padding-bottom:5px;
@@ -27,6 +33,11 @@ h1 {
 		margin: .5vw;
 	}
 
+	.label {
+		width: 20vw;
+		margin: .5vw;
+	}
+
 	#board {
 		width: 84vw;
 	}
@@ -39,4 +50,30 @@ h1 {
 
 .removed {
 	background-color: #FFFFFF;
+}
+
+#modal-background {
+	width: 100%;
+    height: 100%;
+	position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.4);
+    display:none;
+}
+
+#modal-box {
+	width: 300px;
+	height: 200px;
+	margin: auto;
+	margin-top: 100px;
+	background-color: #FFFFFF;
+	display: none;
+	text-align: center;
+	border-radius: 20px;;
+}
+
+#modal-content {
+	padding: 30px;
+	padding-bottom: 20px;
 }
