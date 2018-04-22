@@ -1,3 +1,5 @@
+"use strict";
+
 const model = {
 			cards: ['#000080',
 					'#FFA500',
@@ -21,11 +23,11 @@ const view = {
 
 	buildBoard: function(){
 
-		const board = $('#board')
+		const board = $('#board');
 		for(let i = 0; i < 4; i++){
 			const row = $('<div class="row"><div>');
 			for(let j = 0; j < 4; j++){
-				const cell = $(`<div class="cell face-down" id="${i.toString() + ' ' + j.toString()}"></div>`)
+				const cell = $(`<div class="cell face-down" id="${i.toString() + ' ' + j.toString()}"></div>`);
 				cell.appendTo(row);
 			}
 
@@ -35,7 +37,7 @@ const view = {
 
 	flipCard: function(card){
 
-		const backgroundColor = card.hasClass('face-down') ? ctrl.getCard(card) : '#000000'
+		const backgroundColor = card.hasClass('face-down') ? ctrl.getCard(card) : '#000000';
 		card.css('background-color', backgroundColor);
 
 		card.toggleClass('face-down');
@@ -84,7 +86,7 @@ const view = {
 
 		$('.removed').removeClass('removed');
 		$('.cell').addClass('face-down');
-		$('.cell').css('background-color', '#000000')
+		$('.cell').css('background-color', '#000000');
 
 	},
 
@@ -96,9 +98,9 @@ const view = {
 		$('#modal-background').on('click', function () {
 			$('#modal-background').css('display', 'none');
 			$('#modal-box').css('display', 'none');
-		})
+		});
 	}
-}
+};
 
 const ctrl = {
 
@@ -223,7 +225,7 @@ const ctrl = {
 				model.locked = true;
 
 				const firstCard = model.previousCard;
-				model.previousCard = null
+				model.previousCard = null;
 				
 				setTimeout(function(firstCard) {
 					if (ctrl.cardsMatch(target, firstCard)){
@@ -245,7 +247,7 @@ const ctrl = {
 
 					model.locked = false;
 
-				}, 750, firstCard)
+				}, 750, firstCard);
 			}
 			else {
 				model.previousCard = target;
@@ -255,13 +257,13 @@ const ctrl = {
 	},
 
 	run: function() {
-		$('#board').on('click', ctrl.clickEventHandler)
-		$('.new-game').on('click', ctrl.newGame)
+		$('#board').on('click', ctrl.clickEventHandler);
+		$('.new-game').on('click', ctrl.newGame);
 
 		view.buildBoard();
 		ctrl.newGame();
 
 	}
-}
+};
 
 ctrl.run();
