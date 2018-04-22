@@ -1,7 +1,10 @@
 # Concentration
 ### A Memory Game
 
-Match the colors until the board is clear.
+Click on the black squares.  Match pairs of colors until the board is clear.
 
-Batteries included.
+#### Libraries used
+JQuery
+
+[screenshot](http://github.com/concentration/raw/img/screenshot-concentration.png)
 
